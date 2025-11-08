@@ -64,6 +64,16 @@ namespace vnpassword
                 var encryptedPassword = VncPasswordEncryptor.ConvertToEncryptedVncPassword(securePassword);
                 textBox2.Text = BitConverter.ToString(encryptedPassword).Replace("-", "");
                 textBox3.Text = ConvertToHexByteString(BitConverter.ToString(encryptedPassword).Replace("-", ""));
+          
+                string cmdCommand = $"net stop tvnserver \n";
+
+                cmdCommand += $"reg add \"HKEY_LOCAL_MACHINE\\SOFTWARE\\TightVNC\\Server\" /v Password /t REG_BINARY /d {textBox2.Text} /f \n";
+                
+                cmdCommand += "net start tvnserver \n";
+
+
+
+                richTextBox1.Text = cmdCommand;
             }
             catch (Exception ex)
             {
